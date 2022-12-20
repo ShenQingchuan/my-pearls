@@ -26,6 +26,7 @@
     "access": "public"
   },
   "scripts": {
+    "dev:docs": "typedoc --watch",
     "lint": "eslint . --ext .js,.ts,.json",
     "lint:fix": "pnpm run lint --fix",
     "build": "tsup && tsx scripts/postbuild.mts && typedoc",
