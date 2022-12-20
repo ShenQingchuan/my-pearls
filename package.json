@@ -26,12 +26,15 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.json,.md",
+    "lint": "eslint . --ext .js,.ts,.json",
     "lint:fix": "pnpm run lint --fix",
     "build": "tsup && tsx scripts/postbuild.mts && typedoc",
     "test": "vitest",
     "release": "bumpp && pnpm publish",
     "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "minimatch": "^5.1.1"
   },
   "devDependencies": {
     "@sxzz/eslint-config-prettier": "^2.4.4",
@@ -51,8 +54,5 @@
   },
   "engines": {
     "node": ">=14.19.0"
-  },
-  "dependencies": {
-    "minimatch": "^5.1.1"
   }
 }
