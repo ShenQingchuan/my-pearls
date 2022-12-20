@@ -5,7 +5,7 @@ import {
   rmSync,
   writeFileSync,
 } from 'node:fs'
-import { assert, describe, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import {
   emptyDir,
   isDirEmpty,
@@ -67,23 +67,23 @@ describe('MyPearl:fs', () => {
     )
     mockFilesToRunTest(() => {
       test('isDirExistsSync', () => {
-        assert.ok(isDirExistsSync(MOCK_FILES_DIR))
-        assert.ok(isDirExistsSync(`${MOCK_FILES_DIR}/sub-dir-1`))
+        expect(isDirExistsSync(MOCK_FILES_DIR)).toBeTruthy()
+        expect(isDirExistsSync(`${MOCK_FILES_DIR}/sub-dir-1`)).toBeTruthy()
       })
       test('isFileReadableSync', () => {
-        assert.ok(isFileReadableSync(READABLE_FILE))
-        assert.notOk(isFileReadableSync(NON_READABLE_FILE))
+        expect(isFileReadableSync(READABLE_FILE)).toBeTruthy()
+        expect(isFileReadableSync(NON_READABLE_FILE)).toBeFalsy()
       })
       test('emptyDirSync, isDirEmptySync', () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-1`
         emptyDirSync(subDirPath)
-        assert.ok(isDirEmptySync(subDirPath))
+        expect(isDirEmptySync(subDirPath)).toBeTruthy()
       })
       test('emptyDirSync with skips', () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-2`
         emptyDirSync(subDirPath, ['*.md'])
-        assert.ok(existsSync(`${subDirPath}/sub-dir-2-file.md`))
-        assert.notOk(existsSync(`${subDirPath}/sub-dir-2-file.txt`))
+        expect(existsSync(`${subDirPath}/sub-dir-2-file.md`)).toBeTruthy()
+        expect(existsSync(`${subDirPath}/sub-dir-2-file.txt`)).toBeFalsy()
       })
     })
   })
@@ -94,23 +94,23 @@ describe('MyPearl:fs', () => {
     )
     mockFilesToRunTest(() => {
       test('isDirExists', async () => {
-        assert.ok(await isDirExists(MOCK_FILES_DIR))
-        assert.ok(await isDirExists(`${MOCK_FILES_DIR}/sub-dir-1`))
+        expect(await isDirExists(MOCK_FILES_DIR)).toBeTruthy()
+        expect(await isDirExists(`${MOCK_FILES_DIR}/sub-dir-1`)).toBeTruthy()
       })
       test('isFileReadable', async () => {
-        assert.ok(await isFileReadable(READABLE_FILE))
-        assert.notOk(await isFileReadable(NON_READABLE_FILE))
+        expect(await isFileReadable(READABLE_FILE)).toBeTruthy()
+        expect(await isFileReadable(NON_READABLE_FILE)).toBeFalsy()
       })
       test('emptyDir, isDirEmpty', async () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-1`
         await emptyDir(subDirPath)
-        assert.ok(await isDirEmpty(subDirPath))
+        expect(await isDirEmpty(subDirPath)).toBeTruthy()
       })
       test('emptyDir with skips', async () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-2`
         await emptyDir(subDirPath, ['*.md'])
-        assert.ok(existsSync(`${subDirPath}/sub-dir-2-file.md`))
-        assert.notOk(existsSync(`${subDirPath}/sub-dir-2-file.txt`))
+        expect(existsSync(`${subDirPath}/sub-dir-2-file.md`)).toBeTruthy()
+        expect(existsSync(`${subDirPath}/sub-dir-2-file.txt`)).toBeFalsy()
       })
     })
   })
