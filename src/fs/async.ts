@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 import minimatch from 'minimatch'
 import type { PathLike } from 'node:fs'
 
+/** @category fs - async */
 export async function isFileReadable(filePath: PathLike): Promise<boolean> {
   try {
     await access(filePath, constants.R_OK)
@@ -13,12 +14,14 @@ export async function isFileReadable(filePath: PathLike): Promise<boolean> {
   }
 }
 
+/** @category fs - async */
 export async function isDirExists(dirPath: PathLike): Promise<boolean> {
   const isReadable = await isFileReadable(dirPath)
   const dirStat = await stat(dirPath)
   return isReadable && dirStat.isDirectory()
 }
 
+/** @category fs - async */
 export async function emptyDir(
   dirPath: PathLike,
   skips: string[] = []
@@ -43,6 +46,7 @@ export async function emptyDir(
   }
 }
 
+/** @category fs - async */
 export function isDirEmpty(dirPath: PathLike): boolean {
   const files = readdirSync(dirPath)
   return files.length === 0

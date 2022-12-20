@@ -11,6 +11,7 @@ import { readdir } from 'node:fs/promises'
 import minimatch from 'minimatch'
 import type { PathLike } from 'node:fs'
 
+/** @category fs - sync */
 export function isFileReadableSync(filePath: PathLike): boolean {
   try {
     accessSync(filePath, constants.R_OK)
@@ -20,12 +21,14 @@ export function isFileReadableSync(filePath: PathLike): boolean {
   }
 }
 
+/** @category fs - sync */
 export function isDirExistsSync(dirPath: PathLike): boolean {
   const isReadable = isFileReadableSync(dirPath)
   const dirStat = statSync(dirPath)
   return isReadable && dirStat.isDirectory()
 }
 
+/** @category fs - sync */
 export function emptyDirSync(dirPath: PathLike, skips: string[] = []): void {
   dirPath = resolve(process.cwd(), dirPath.toString())
   if (!isDirExistsSync(dirPath)) {
@@ -47,6 +50,7 @@ export function emptyDirSync(dirPath: PathLike, skips: string[] = []): void {
   }
 }
 
+/** @category fs - sync */
 export async function isDirEmptySync(dirPath: PathLike): Promise<boolean> {
   const files = await readdir(dirPath)
   return files.length === 0
