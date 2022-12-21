@@ -43,11 +43,13 @@
     "@sxzz/eslint-config-ts": "^2.4.4",
     "@types/minimatch": "^5.1.2",
     "@types/node": "*",
+    "@velumjs/yorkie": "^1.0.0",
     "@vitest/coverage-c8": "^0.26.0",
     "bumpp": "^8.2.1",
     "eslint": "^8.30.0",
     "eslint-define-config": "^1.12.0",
     "fast-glob": "^3.2.12",
+    "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
@@ -57,5 +59,13 @@
   },
   "engines": {
     "node": ">=16.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,json}": [
+      "eslint --fix"
+    ]
   }
 }
