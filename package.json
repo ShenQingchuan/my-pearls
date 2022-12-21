@@ -27,9 +27,10 @@
   },
   "scripts": {
     "dev:docs": "typedoc --watch",
+    "build:docs": "typedoc",
     "lint": "eslint . --ext .js,.ts,.json",
     "lint:fix": "pnpm run lint --fix",
-    "build": "tsup && tsx scripts/postbuild.mts && typedoc",
+    "build": "tsup && tsx scripts/postbuild.mts",
     "test": "vitest",
     "release": "bumpp && pnpm publish",
     "prepublishOnly": "pnpm run build"
