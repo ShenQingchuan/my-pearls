@@ -1,6 +1,6 @@
 {
   "name": "my-pearls",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "packageManager": "pnpm@7.18.2",
   "description": "My awesome Node.js toolkit library",
   "license": "MIT",
