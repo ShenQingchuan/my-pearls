@@ -16,11 +16,11 @@
     "dist"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     "require": "./dist/index.js",
-    "import": "./dist/index.mjs"
+    "import": "./dist/esm/index.js"
   },
   "publishConfig": {
     "access": "public"
@@ -36,7 +36,8 @@
     "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
-    "minimatch": "^5.1.1"
+    "minimatch": "^5.1.1",
+    "my-pearls": "^0.0.4"
   },
   "devDependencies": {
     "@sxzz/eslint-config-prettier": "^2.4.4",
