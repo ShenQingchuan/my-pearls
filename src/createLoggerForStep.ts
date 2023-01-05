@@ -16,6 +16,7 @@ export interface StepLoggerOptions {
 }
 
 /**
+ *  Print some log information for one function running some procedures
  *
  * @param options.subject Subject name for task step to be prefixed at printed message
  * @param options.colorFn Dyeing function to give text ASCII colors
