@@ -65,3 +65,12 @@ export function colorful(str: string, options: ColorfulOptions[] = []) {
 
   return `\u001B[${colors}m${str}\u001B[0m`
 }
+
+function createColorful(options: ColorfulOptions[]) {
+  return (str: string) => colorful(str, options)
+}
+export const Colorful: Record<ColorfulOptions, (str: string) => string> =
+  Object.keys(colorMap).reduce((acc, key) => {
+    acc[key as ColorfulOptions] = createColorful([key as ColorfulOptions])
+    return acc
+  }, {} as Record<ColorfulOptions, (str: string) => string>)

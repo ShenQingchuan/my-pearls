@@ -26,8 +26,9 @@
     "access": "public"
   },
   "scripts": {
-    "dev:docs": "typedoc --watch",
+    "dev:docs": "typedoc --watch --preserveWatchOutput",
     "build:docs": "typedoc",
+    "serv:docs": "serv docs",
     "lint": "eslint . --ext .js,.ts,.json",
     "lint:fix": "pnpm run lint --fix",
     "build": "tsup && tsx scripts/postbuild.mts",
@@ -51,6 +52,7 @@
     "fast-glob": "^3.2.12",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
+    "serv": "^0.2.4",
     "tsup": "^6.5.0",
     "tsx": "^3.12.1",
     "typedoc": "^0.23.23",
