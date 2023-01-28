@@ -73,5 +73,7 @@ function createSingleLinePrint(stream: NodeJS.WriteStream = process.stdout) {
  * Keeping printing messages on a single line.
  *
  * If another my-print function is called, the last output will be remained.
+ *
+ * @category logger
  */
 export const mySingleLinePrint = createSingleLinePrint()
