@@ -4,6 +4,8 @@
  *
  * @param fn Given a function that expects to run only once.
  * @returns If the `fn` has already been called, returns undefined. Otherwise, returns the result of calling `fn`.
+ *
+ * @category Other
  */
 export function onceRun<T extends (...args: any[]) => any>(fn: T): T {
   let called = false
@@ -22,6 +24,8 @@ export function onceRun<T extends (...args: any[]) => any>(fn: T): T {
  * @param fn Given a function that expects to run only `count` times.
  * @param count The number of times the function can be called.
  * @returns If the `fn` has already been called `count` times, returns undefined. Otherwise, returns the result of calling `fn`.
+ *
+ * @category Other
  */
 export function countRun<T extends (...args: any[]) => any>(
   fn: T,

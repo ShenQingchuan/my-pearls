@@ -52,6 +52,15 @@ const colorMap: Record<ColorfulOptions, string> = {
 /**
  * Transform a string to ascii colorful string.
  *
+ * ## Example
+ * ```typescript
+ * import { colorful } from 'my-pearls'
+ *
+ * colorful('This is red', ['red'])
+ * colorful('This is green background', ['bgGreen'])
+ * colorful('This is cyan and bold', ['cyan', 'bold'])
+ * ```
+ *
  * @param str String to be colored.
  * @param options Colorful options.
  * @returns Ascii colorful string.
@@ -66,9 +75,23 @@ export function colorful(str: string, options: ColorfulOptions[] = []) {
   return `\u001B[${colors}m${str}\u001B[0m`
 }
 
+/** @private */
 function createColorful(options: ColorfulOptions[]) {
   return (str: string) => colorful(str, options)
 }
+
+/**
+ * Colorful string creator functions map.
+ *
+ * ## Example
+ * ```typescript
+ * import { Colorful } from 'my-pearls'
+ *
+ * Colorful.red('This is red')
+ * Colorful.bgGreen('This is green background')
+ * Colorful.bold('This is bold')
+ * ```
+ */
 export const Colorful: Record<ColorfulOptions, (str: string) => string> =
   Object.keys(colorMap).reduce((acc, key) => {
     acc[key as ColorfulOptions] = createColorful([key as ColorfulOptions])
