@@ -8,3 +8,19 @@
 export function filterEmptyStr(strings: string[]): string[] {
   return strings.filter((str) => str !== '')
 }
+
+/**
+ * Escape special character in string for building RegExp
+ *
+ * ## Example
+ * ```js
+ * escapeForCreateRegExp(
+ *  "/path/to/resource.html?search=query"
+ * ); // Expected: "\/path\/to\/resource\.html\?search=query"
+ * ```
+ *
+ * @category Strings
+ */
+export function escapeForCreateRegExp(str: string) {
+  return str.replace(/[$()*+./?[\\\]^{|}-]/g, '\\$&')
+}

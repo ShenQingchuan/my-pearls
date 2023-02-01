@@ -1,10 +1,24 @@
 import { describe, expect, test } from 'vitest'
 import { colorful } from '../src/strings/colorful'
-import { filterEmptyStr } from '../src/strings/dispose'
+import { escapeForCreateRegExp, filterEmptyStr } from '../src/strings/dispose'
 
 describe('MyPearl:strings', () => {
   test('filterEmptyStr', () => {
     expect(filterEmptyStr(['', 'a', 'b'])).toEqual(['a', 'b'])
+  })
+
+  test('escapeForCreateRegExp', () => {
+    const str1 = '/path/to/resource.html?search=query'
+    const str2 = '{ [bracket] in curly \\* }'
+    expect(escapeForCreateRegExp(str1)).toBe(
+      '\\/path\\/to\\/resource\\.html\\?search=query'
+    )
+    expect(escapeForCreateRegExp(str2)).toBe(
+      '\\{ \\[bracket\\] in curly \\\\\\* \\}'
+    )
+
+    expect(new RegExp(str1).test(`ooo${str1}zzz`)).toBe(true)
+    expect(new RegExp(str1).test(`ooo${str2}zzz`)).toBe(true)
   })
 
   test('colorful', () => {
