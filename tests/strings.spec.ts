@@ -10,15 +10,16 @@ describe('MyPearl:strings', () => {
   test('escapeForCreateRegExp', () => {
     const str1 = '/path/to/resource.html?search=query'
     const str2 = '{ [bracket] in curly \\* }'
+    const escapedStr1 = escapeForCreateRegExp(str1)
+    const escapedStr2 = escapeForCreateRegExp(str2)
     expect(escapeForCreateRegExp(str1)).toBe(
       '\\/path\\/to\\/resource\\.html\\?search=query'
     )
     expect(escapeForCreateRegExp(str2)).toBe(
       '\\{ \\[bracket\\] in curly \\\\\\* \\}'
     )
-
-    expect(new RegExp(str1).test(`ooo${str1}zzz`)).toBe(true)
-    expect(new RegExp(str1).test(`ooo${str2}zzz`)).toBe(true)
+    expect(new RegExp(escapedStr1).test(str1)).toBe(true)
+    expect(new RegExp(escapedStr2).test(str2)).toBe(true)
   })
 
   test('colorful', () => {
