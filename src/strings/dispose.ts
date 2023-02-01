@@ -15,8 +15,8 @@ export function filterEmptyStr(strings: string[]): string[] {
  * ## Example
  * ```js
  * escapeForCreateRegExp(
- *  "/path/to/resource.html?search=query"
- * ); // Expected: "\/path\/to\/resource\.html\?search=query"
+ *  '/path/to/resource.html?search=query'
+ * ); // Expected: '\\/path\\/to\\/resource\\.html\\?search=query'
  * ```
  *
  * @category Strings
