@@ -4,6 +4,8 @@
  * @param len specify the length of the id
  * @param radix specify the character scope size for random generated UUID bit
  * @returns {string} UUID string
+ *
+ * @category Other
  */
 export function getUniqueId(options?: { length?: number; radix?: number }) {
   let { length, radix = 62 } = options ?? { radix: 62 }
