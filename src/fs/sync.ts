@@ -1,18 +1,21 @@
 import {
   accessSync,
   constants,
+  existsSync,
   readdirSync,
   rmdirSync,
   statSync,
   unlinkSync,
 } from 'node:fs'
 import { resolve } from 'node:path'
-import { readdir } from 'node:fs/promises'
 import minimatch from 'minimatch'
 import type { PathLike } from 'node:fs'
 
 /** @category fs - sync */
-export function isFileReadableSync(filePath: PathLike): boolean {
+export function isPathAccessibleSync(filePath: PathLike): boolean {
+  if (!existsSync(filePath)) {
+    return false
+  }
   try {
     accessSync(filePath, constants.R_OK)
     return true
@@ -22,16 +25,19 @@ export function isFileReadableSync(filePath: PathLike): boolean {
 }
 
 /** @category fs - sync */
-export function isDirExistsSync(dirPath: PathLike): boolean {
-  const isReadable = isFileReadableSync(dirPath)
-  const dirStat = statSync(dirPath)
-  return isReadable && dirStat.isDirectory()
+export function isValidDirPathSync(dirPath: PathLike): boolean {
+  return isPathAccessibleSync(dirPath) && statSync(dirPath).isDirectory()
+}
+
+/** @category fs - sync */
+export function isValidFilePathSync(filePath: PathLike): boolean {
+  return isPathAccessibleSync(filePath) && statSync(filePath).isFile()
 }
 
 /** @category fs - sync */
 export function emptyDirSync(dirPath: PathLike, skips: string[] = []): void {
   dirPath = resolve(process.cwd(), dirPath.toString())
-  if (!isDirExistsSync(dirPath)) {
+  if (!isValidDirPathSync(dirPath)) {
     throw new Error(`Directory ${dirPath} does not exist`)
   }
   const files = readdirSync(dirPath)
@@ -51,7 +57,10 @@ export function emptyDirSync(dirPath: PathLike, skips: string[] = []): void {
 }
 
 /** @category fs - sync */
-export async function isDirEmptySync(dirPath: PathLike): Promise<boolean> {
-  const files = await readdir(dirPath)
-  return files.length === 0
+export function isEmptyDirSync(dirPath: PathLike): boolean {
+  if (!isValidDirPathSync(dirPath)) {
+    return false
+  }
+  const subItems = readdirSync(dirPath)
+  return subItems.length === 0
 }

@@ -8,15 +8,16 @@ import {
 import { describe, expect, test } from 'vitest'
 import {
   emptyDir,
-  isDirEmpty,
-  isDirExists,
-  isFileReadable,
+  isEmptyDir,
+  isPathAccessible,
+  isValidDirPath,
+  isValidFilePath,
 } from '../src/fs/async'
 import {
   emptyDirSync,
-  isDirEmptySync,
-  isDirExistsSync,
-  isFileReadableSync,
+  isEmptyDirSync,
+  isValidDirPathSync,
+  isValidFilePathSync,
 } from '../src/fs/sync'
 
 const MOCK_FILES_ROOT = '/tmp/my-pearl-test-files/fs/'
@@ -42,17 +43,17 @@ function mockFilesToRunTest(runFn: () => void, sync = false) {
   writeFileSync(READABLE_FILE, 'This is a readable-file.')
   chmodSync(READABLE_FILE, 0o644)
 
-  // Create some files in sub-directories
-  ;[1, 2, 3].forEach((e) => {
-    const subDirPath = `${MOCK_FILES_DIR}/sub-dir-${e}`
-    mkdirSync(subDirPath)
-    ;['txt', 'md', 'html'].forEach((ext) => {
-      writeFileSync(
-        `${subDirPath}/sub-dir-${e}-file.${ext}`,
-        `This is a .${ext} file in sub-directory ${e}.`
-      )
+    // Create some files in sub-directories
+    ;[1, 2, 3].forEach((e) => {
+      const subDirPath = `${MOCK_FILES_DIR}/sub-dir-${e}`
+      mkdirSync(subDirPath)
+        ;['txt', 'md', 'html'].forEach((ext) => {
+          writeFileSync(
+            `${subDirPath}/sub-dir-${e}-file.${ext}`,
+            `This is a .${ext} file in sub-directory ${e}.`
+          )
+        })
     })
-  })
 
   runFn()
 
@@ -67,17 +68,17 @@ describe('MyPearl:fs', () => {
     )
     mockFilesToRunTest(() => {
       test('isDirExistsSync', () => {
-        expect(isDirExistsSync(MOCK_FILES_DIR)).toBeTruthy()
-        expect(isDirExistsSync(`${MOCK_FILES_DIR}/sub-dir-1`)).toBeTruthy()
+        expect(isValidDirPathSync(MOCK_FILES_DIR)).toBeTruthy()
+        expect(isValidDirPathSync(`${MOCK_FILES_DIR}/sub-dir-1`)).toBeTruthy()
       })
       test('isFileReadableSync', () => {
-        expect(isFileReadableSync(READABLE_FILE)).toBeTruthy()
-        expect(isFileReadableSync(NON_READABLE_FILE)).toBeFalsy()
+        expect(isValidFilePathSync(READABLE_FILE)).toBeTruthy()
+        expect(isValidFilePathSync(NON_READABLE_FILE)).toBeFalsy()
       })
-      test('emptyDirSync, isDirEmptySync', () => {
+      test('emptyDirSync, isEmptyDirSync', () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-1`
         emptyDirSync(subDirPath)
-        expect(isDirEmptySync(subDirPath)).toBeTruthy()
+        expect(isEmptyDirSync(subDirPath)).toBeTruthy()
       })
       test('emptyDirSync with skips', () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-2`
@@ -93,18 +94,18 @@ describe('MyPearl:fs', () => {
       { sync: false }
     )
     mockFilesToRunTest(() => {
-      test('isDirExists', async () => {
-        expect(await isDirExists(MOCK_FILES_DIR)).toBeTruthy()
-        expect(await isDirExists(`${MOCK_FILES_DIR}/sub-dir-1`)).toBeTruthy()
+      test('isValidDirPath', async () => {
+        expect(await isValidDirPath(MOCK_FILES_DIR)).toBeTruthy()
+        expect(await isValidDirPath(`${MOCK_FILES_DIR}/sub-dir-1`)).toBeTruthy()
       })
-      test('isFileReadable', async () => {
-        expect(await isFileReadable(READABLE_FILE)).toBeTruthy()
-        expect(await isFileReadable(NON_READABLE_FILE)).toBeFalsy()
+      test('isPathAccessible', async () => {
+        expect(await isValidFilePath(READABLE_FILE)).toBeTruthy()
+        expect(await isPathAccessible(NON_READABLE_FILE)).toBeFalsy()
       })
-      test('emptyDir, isDirEmpty', async () => {
+      test('emptyDir, isEmptyDir', async () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-1`
         await emptyDir(subDirPath)
-        expect(await isDirEmpty(subDirPath)).toBeTruthy()
+        expect(await isEmptyDir(subDirPath)).toBeTruthy()
       })
       test('emptyDir with skips', async () => {
         const subDirPath = `${MOCK_FILES_DIR}/sub-dir-2`
