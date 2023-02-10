@@ -25,14 +25,14 @@ export async function isPathAccessible(filePath: PathLike): Promise<boolean> {
   }
 }
 
-/** @category fs - sync */
+/** @category fs - async */
 export async function isValidDirPath(dirPath: PathLike): Promise<boolean> {
   const accessible = await isPathAccessible(dirPath)
   const stats = await stat(dirPath)
   return accessible && stats.isDirectory()
 }
 
-/** @category fs - sync */
+/** @category fs - async */
 export async function isValidFilePath(filePath: PathLike): Promise<boolean> {
   const accessible = await isPathAccessible(filePath)
   const stats = await stat(filePath)
