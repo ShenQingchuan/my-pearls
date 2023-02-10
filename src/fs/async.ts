@@ -75,7 +75,9 @@ export async function isEmptyDir(dirPath: PathLike): Promise<boolean> {
   return subItems.length === 0
 }
 
-/** @category fs - async */
+/** Write to the file. If any folder does not exist on the file path, it will be created.
+ *
+ * @category fs - async */
 export async function writeFileRecursive(
   filename: string,
   content: string | NodeJS.ArrayBufferView,

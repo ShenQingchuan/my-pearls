@@ -67,7 +67,10 @@ export function isEmptyDirSync(dirPath: PathLike): boolean {
   return subItems.length === 0
 }
 
-/** @category fs - sync */
+/** Write to the file. If any folder does not exist on the file path, it will be created.
+ *
+ * @category fs - sync
+ * */
 export function writeFileSyncRecursive(
   filename: string,
   content: string | NodeJS.ArrayBufferView,
