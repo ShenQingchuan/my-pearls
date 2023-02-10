@@ -2,6 +2,7 @@ import {
   chmodSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   rmSync,
   writeFileSync,
 } from 'node:fs'
@@ -18,6 +19,7 @@ import {
   isEmptyDirSync,
   isValidDirPathSync,
   isValidFilePathSync,
+  writeFileSyncRecursive,
 } from '../src/fs/sync'
 
 const MOCK_FILES_ROOT = '/tmp/my-pearl-test-files/fs/'
@@ -43,17 +45,17 @@ function mockFilesToRunTest(runFn: () => void, sync = false) {
   writeFileSync(READABLE_FILE, 'This is a readable-file.')
   chmodSync(READABLE_FILE, 0o644)
 
-    // Create some files in sub-directories
-    ;[1, 2, 3].forEach((e) => {
-      const subDirPath = `${MOCK_FILES_DIR}/sub-dir-${e}`
-      mkdirSync(subDirPath)
-        ;['txt', 'md', 'html'].forEach((ext) => {
-          writeFileSync(
-            `${subDirPath}/sub-dir-${e}-file.${ext}`,
-            `This is a .${ext} file in sub-directory ${e}.`
-          )
-        })
+  // Create some files in sub-directories
+  ;[1, 2, 3].forEach((e) => {
+    const subDirPath = `${MOCK_FILES_DIR}/sub-dir-${e}`
+    mkdirSync(subDirPath)
+    ;['txt', 'md', 'html'].forEach((ext) => {
+      writeFileSync(
+        `${subDirPath}/sub-dir-${e}-file.${ext}`,
+        `This is a .${ext} file in sub-directory ${e}.`
+      )
     })
+  })
 
   runFn()
 
@@ -86,6 +88,16 @@ describe('MyPearl:fs', () => {
         expect(existsSync(`${subDirPath}/sub-dir-2-file.md`)).toBeTruthy()
         expect(existsSync(`${subDirPath}/sub-dir-2-file.txt`)).toBeFalsy()
       })
+      test('writeFileSyncRecursive', () => {
+        const newFilePath = `${MOCK_FILES_DIR}/sync/new-dir-a/new-dir-b/new-file.txt`
+        const content = 'Hello world!'
+        writeFileSyncRecursive(newFilePath, content, {
+          encoding: 'utf-8',
+        })
+        expect(existsSync(newFilePath)).toBe(true)
+        const gotContent = readdirSync(newFilePath).toString()
+        expect(gotContent).toBe(content)
+      })
     })
   })
 
@@ -112,6 +124,16 @@ describe('MyPearl:fs', () => {
         await emptyDir(subDirPath, ['*.md'])
         expect(existsSync(`${subDirPath}/sub-dir-2-file.md`)).toBeTruthy()
         expect(existsSync(`${subDirPath}/sub-dir-2-file.txt`)).toBeFalsy()
+      })
+      test('writeFileSyncRecursive', async () => {
+        const newFilePath = `${MOCK_FILES_DIR}/async/new-dir-a/new-dir-b/new-file.txt`
+        const content = 'Hello world!'
+        await writeFileSync(newFilePath, content, {
+          encoding: 'utf-8',
+        })
+        expect(existsSync(newFilePath)).toBe(true)
+        const gotContent = readdirSync(newFilePath).toString()
+        expect(gotContent).toBe(content)
       })
     })
   })

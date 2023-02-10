@@ -1,5 +1,13 @@
 import { constants, existsSync } from 'node:fs'
-import { access, readdir, rmdir, stat, unlink } from 'node:fs/promises'
+import {
+  access,
+  mkdir,
+  readdir,
+  rmdir,
+  stat,
+  unlink,
+  writeFile,
+} from 'node:fs/promises'
 import { resolve } from 'node:path'
 import minimatch from 'minimatch'
 import type { PathLike } from 'node:fs'
@@ -19,15 +27,15 @@ export async function isPathAccessible(filePath: PathLike): Promise<boolean> {
 
 /** @category fs - sync */
 export async function isValidDirPath(dirPath: PathLike): Promise<boolean> {
-  const accessible = await isPathAccessible(dirPath);
-  const stats = await stat(dirPath);
+  const accessible = await isPathAccessible(dirPath)
+  const stats = await stat(dirPath)
   return accessible && stats.isDirectory()
 }
 
 /** @category fs - sync */
 export async function isValidFilePath(filePath: PathLike): Promise<boolean> {
-  const accessible = await isPathAccessible(filePath);
-  const stats = await stat(filePath);
+  const accessible = await isPathAccessible(filePath)
+  const stats = await stat(filePath)
   return accessible && stats.isFile()
 }
 
@@ -65,4 +73,33 @@ export async function isEmptyDir(dirPath: PathLike): Promise<boolean> {
   }
   const subItems = await readdir(dirPath)
   return subItems.length === 0
+}
+
+/** @category fs - async */
+export async function writeFileRecursive(
+  filename: string,
+  content: string | NodeJS.ArrayBufferView,
+  options?: Parameters<typeof writeFile>[2]
+) {
+  let filepath = filename.replace(/\\/g, '/')
+  let root = ''
+  if (filepath[0] === '/') {
+    root = '/'
+    filepath = filepath.slice(1)
+  } else if (filepath[1] === ':') {
+    root = filepath.slice(0, 3) // c:\
+    filepath = filepath.slice(3)
+  }
+
+  const folders = filepath.split('/').slice(0, -1) // remove last item, file
+  let accPath = ''
+  for (const folder of folders) {
+    const folderPath = `${accPath + folder}/`
+    if (!existsSync(folderPath)) {
+      await mkdir(folderPath)
+    }
+    accPath = folderPath
+  }
+
+  await writeFile(root + filepath, content, options)
 }
